@@ -279,7 +279,9 @@ class GeneticAlgorithm:
             if not os.path.exists(plot_dir):
                 os.makedirs(plot_dir)
             
+            fig = plt.gcf()
             plt.savefig(fig_src, format='png')
+            plt.close(fig)
 
             return fig_src
         
@@ -332,8 +334,7 @@ class GeneticAlgorithm:
 
         ax.text(best[0], best[1], best[2], f' Melhor indivíduo:\n x={best[0]}, y={best[1]}, fitness={best[2]}', transform=ax.transAxes, verticalalignment='top', color='red')
 
-        if self.show:
-            plt.show()
+        # plt.show()
         
         fig_name = generate_unique_filename('genetic')
         return self.save_plot(f'plot_fitness_{fig_name}')
@@ -358,6 +359,7 @@ class GeneticAlgorithm:
         """
         plt.figure(num=f'Versão {self.version}')
         generations = range(len(self.fitness_avgs))  # Cria um array de números de geração
+        print(f'\ngenerations:\n{generations}')
         plt.plot(generations, self.fitness_avgs, label='Média', marker='o')
         plt.plot(generations, self.fitness_max, label='Máximo', marker='o')
         plt.plot(generations, self.fitness_min, label='Mínimo', marker='o')
