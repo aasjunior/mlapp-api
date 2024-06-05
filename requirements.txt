@@ -1,5 +1,8 @@
-fastapi
+fastapi==0.111.0
+matplotlib==3.8.4
+numpy==1.25.0
+pandas==2.0.3
+pydantic==2.7.3
+scikit_learn==1.5.0
 uvicorn
-pymongo
-pydantic
 pydantic-settings

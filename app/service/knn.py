@@ -8,7 +8,8 @@ import pandas as pd
 
 def apply_knn(X: DataFrame, y: DataFrame, test_size=0.3, train_size=0.7, n_neighbors=3):
     try:
-        X, y = normalize_data(X, y)
+        if not is_normalized(X):
+            X, y = normalize_data(X, y)
 
         X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=test_size, train_size=train_size)
 
@@ -39,3 +40,5 @@ def normalize_data(X: DataFrame, y: DataFrame):
     
     return X, y
 
+def is_normalized(X: DataFrame):
+    return (X >= 0).all().all() and (X <= 1).all().all()
