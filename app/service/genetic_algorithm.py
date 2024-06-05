@@ -4,11 +4,31 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def apply_genetic_algorithm():
+def apply_genetic_algorithm(for_max: bool = False):
+    try:
+        size = np.random.randint(20, 101)
+        n_childrens = int(0.7 * size)
+        n_generations = 10
+
+        if for_max:
+            version_max(size, n_childrens, n_generations)
+
+        else:
+            version_min(size, n_childrens, n_generations)
+        
+        return {
+            'size': size,
+            'n_childrens': n_childrens,
+            'n_generations': n_generations
+        }
+
+    except Exception as e:
+        raise Exception(f'\nOcorreu um erro na execução do algoritmo genéetico:\n{e}\n')
 
 
 
-def version_min(size, n_childrens, n_generations, average_fitness=False):
+
+def version_min(size: int, n_childrens: int, n_generations: int, average_fitness: bool = False):
     save_docs = not average_fitness
 
     try:
@@ -26,7 +46,7 @@ def version_min(size, n_childrens, n_generations, average_fitness=False):
 
 
 
-def version_max(size, n_childrens, n_generations, average_fitness=False):
+def version_max(size: int, n_childrens: int, n_generations: int, average_fitness: bool = False):
     save_docs = not average_fitness
 
     try:
@@ -54,7 +74,6 @@ def average():
 
     fitness_avg_v01 = []
     fitness_avg_v02 = []
-    fitness_avg_v03 = []
 
     try:
         iterations = list(range(1, n_generations + 1))
@@ -82,7 +101,7 @@ def average():
         plt.legend()
        
         plt.savefig('docs/plot/plot_avg_iterations.png')
-        plt.show()
+        # plt.show()
         
         print(f'\nA analise do algoritmo e seus resultados podem ser observados em: {readme}')
         print(f'Obs: No VSCode, para melhor visualização do README, usar o comando CTRL + SHIFT + v.\n')
