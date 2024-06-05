@@ -3,7 +3,9 @@ from model.DataScheme import DataScheme
 from service.knn import apply_knn
 from service.decision_tree import apply_decision_tree
 from service.genetic_algorithm import apply_genetic_algorithm
+from service.utils import generate_log
 import pandas as pd
+import traceback
 
 router = APIRouter()
 
@@ -29,6 +31,7 @@ async def knn(data: DataScheme, file: UploadFile = File(...)):
         return {'result': info}
 
     except Exception as e:
+        generate_log(e, traceback.format_exc())
         return HTTPException(status_code=400, detail=str(e))
 
 
@@ -36,8 +39,8 @@ async def knn(data: DataScheme, file: UploadFile = File(...)):
 async def test_knn():
     attribute_headers = ['sepal_length','sepal_width','petal_length','petal_width']
     class_header = 'class'
+    
     try:
-
         df = pd.read_csv(data_src)
         X = df[list(attribute_headers)]
         y = df[class_header]
@@ -54,6 +57,7 @@ async def test_knn():
         return {'result': info}
 
     except Exception as e:
+        generate_log(e, traceback.format_exc())
         return HTTPException(status_code=400, detail=str(e))
 
 
@@ -77,6 +81,7 @@ async def decision_tree(data: DataScheme, file: UploadFile = File(...)):
         return {'result': info}
 
     except Exception as e:
+        generate_log(e, traceback.format_exc())
         return HTTPException(status_code=400, detail=str(e))
 
 
@@ -102,6 +107,7 @@ async def test_decision_tree():
         return {'result': info}
     
     except Exception as e:
+        generate_log(e, traceback.format_exc())
         return HTTPException(status_code=400, detail=str(e))
 
 
@@ -110,7 +116,9 @@ async def genetic_algorithm():
     try:
         info = apply_genetic_algorithm()
         return {'result': info}
+    
     except Exception as e:
-          return HTTPException(status_code=400, detail=str(e))
+        generate_log(e, traceback.format_exc())
+        return HTTPException(status_code=400, detail=str(e))
 
     

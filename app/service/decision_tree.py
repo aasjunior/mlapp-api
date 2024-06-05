@@ -1,7 +1,7 @@
 from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
-from .utils import generate_unique_filename, get_image_base64, ensure_directory_exists
+from .utils import generate_unique_filename, get_image_base64
 from pandas import DataFrame, Series
 from base64 import b64encode
 import matplotlib.pyplot as plt
@@ -30,8 +30,7 @@ def apply_decision_tree(X: DataFrame, y: Series, test_size=0.3, train_size=0.7):
     
     except Exception as e:
         raise Exception(f'\nOcorreu um erro na execução da arvore de decisão:\n{e}\n')
-
-import io
+    
 
 def model_serialize(dt_classifier: DecisionTreeClassifier):
     buffer = BytesIO()

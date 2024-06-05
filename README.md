@@ -3,5 +3,5 @@ C:\..\mlapp-api> cd app
 ```
 
 ```shell
-uvicorn main:app --reload
+python -m uvicorn main:app --reloa
 ```

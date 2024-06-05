@@ -1,8 +1,7 @@
 from model.GeneticAlgorithm import GeneticAlgorithm
-from .utils import get_image_base64, generate_log
+from .utils import get_image_base64
 import matplotlib.pyplot as plt
 import numpy as np
-import traceback
 
 
 def apply_genetic_algorithm(for_max: bool = False):
@@ -13,14 +12,17 @@ def apply_genetic_algorithm(for_max: bool = False):
 
         if for_max:
             fig_fitness, fig_evolution = version_max(size, n_childrens, n_generations)
+            fitness = 'maximizar z = e ^ -(x² + y²)'
 
         else:
             fig_fitness, fig_evolution = version_min(size, n_childrens, n_generations)
-        
+            fitness = 'minimizar z = 20 + x² + y² - 10 * (cos(2πx) + cos(2πy))'
+
         return {
             'size': size,
             'n_childrens': n_childrens,
             'n_generations': n_generations,
+            'fitness': fitness,
             'plot_images': {
                 'plot_fitness': get_image_base64(fig_fitness),
                 'plot_evolution': get_image_base64(fig_evolution)
@@ -53,49 +55,3 @@ def version_max(size: int, n_childrens: int, n_generations: int, average_fitness
     
 def safe_fitness_max(x, y):
     return np.exp(x-((x**2)+(y**2)))
-
-
-def average():
-    size = np.random.randint(20, 101)
-
-    n_childrens = int(0.7 * size)
-
-    n_generations = 10
-
-    fitness_avg_v01 = []
-    fitness_avg_v02 = []
-
-    try:
-        iterations = list(range(1, n_generations + 1))
-
-        for i in range(10):
-            v01 = version_min(size, n_childrens, n_generations, average_fitness=True)
-            v02 = version_max(size, n_childrens, n_generations, average_fitness=True)
-
-            fitness_avg_v01.append(v01)
-            fitness_avg_v02.append(v02)
-
-        avg_v01 = np.mean(fitness_avg_v01)
-        avg_v02 = np.mean(fitness_avg_v02)
-
-        print("Média do fitness da versão 01 nas 10 execuções:", avg_v01)
-        print("Média do fitness da versão 02 nas 10 execuções:", avg_v02)
- 
-        plt.plot(iterations, fitness_avg_v01, label='Versão 01', marker='o')
-        plt.plot(iterations, fitness_avg_v02, label='Versão 02', marker='o')
-        plt.xlabel('Iteração')
-        plt.ylabel('Fitness Médio')
-        plt.title('Comparação de Fitness Médio por Versão a cada Iteração')
-        plt.xticks(iterations)
-        plt.grid(True)
-        plt.legend()
-       
-        plt.savefig('docs/plot/plot_avg_iterations.png')
-        # plt.show()
-        
-        print(f'\nA analise do algoritmo e seus resultados podem ser observados em: {readme}')
-        print(f'Obs: No VSCode, para melhor visualização do README, usar o comando CTRL + SHIFT + v.\n')
-    except Exception as e:
-        generate_log(e, traceback.format_exc())
-        raise Exception(f'Ocorreu um erro:\n{e}\n')
-        

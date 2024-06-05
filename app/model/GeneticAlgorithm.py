@@ -192,7 +192,6 @@ class GeneticAlgorithm:
         Este método implementa uma estratégia de seleção por torneio. Ele seleciona aleatoriamente `n` indivíduos da população e compara seus valores de fitness. Se `for_max` for True, o indivíduo com o maior fitness é escolhido. Caso contrário, o indivíduo com o menor fitness é selecionado. O índice do indivíduo escolhido é retornado.
         """
         candidate_index = random.sample(range(len(self.population)), n)
-        #print(candidates)
 
         candidates = [(i, self.population[i]) for i in candidate_index]
         
@@ -325,8 +324,6 @@ class GeneticAlgorithm:
             
         ax.scatter(best[0], best[1], best[2], color='blue', label='O melhor indíviduo')
 
-        print(f'\nMelhor individuo versão {self.version}:\nx: {best[0]}\ny: {best[1]}\nfitness: {best[2]}')
-
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
         ax.set_zlabel('Fitness')
@@ -358,8 +355,7 @@ class GeneticAlgorithm:
         Se `show` for True, o gráfico também é exibido na tela.
         """
         plt.figure(num=f'Versão {self.version}')
-        generations = range(len(self.fitness_avgs))  # Cria um array de números de geração
-        print(f'\ngenerations:\n{generations}')
+        generations = range(len(self.fitness_avgs))
         plt.plot(generations, self.fitness_avgs, label='Média', marker='o')
         plt.plot(generations, self.fitness_max, label='Máximo', marker='o')
         plt.plot(generations, self.fitness_min, label='Mínimo', marker='o')
