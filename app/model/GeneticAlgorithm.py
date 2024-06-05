@@ -273,14 +273,15 @@ class GeneticAlgorithm:
         Este método tenta salvar o gráfico de fitness 3D gerado pelo método `plot_fitness` como uma imagem PNG no diretório `docs/plot`. Ele cria o diretório se ele não existir. Se ocorrerem erros durante o salvamento, ele gera uma exceção com uma mensagem informativa.
         """
         try:
-            plot_dir = f'assets/doc/plot/{name}'
+            plot_dir = 'assets/doc/plot/'
+            fig_src = f'assets/doc/plot/{name}'
 
             if not os.path.exists(plot_dir):
                 os.makedirs(plot_dir)
             
-            plt.savefig(plot_dir, format='png')
+            plt.savefig(fig_src, format='png')
 
-            return plot_dir
+            return fig_src
         
         except Exception as e:
             raise Exception(f'\nErro ao tentar salvar a plotagem como imagem: \n{e}\n')
@@ -337,8 +338,6 @@ class GeneticAlgorithm:
         fig_name = generate_unique_filename('genetic')
         return self.save_plot(f'plot_fitness_{fig_name}')
         
-        
-        
 
     def plot_evolution(self):
         """
@@ -372,8 +371,7 @@ class GeneticAlgorithm:
 
         plt.title(f'Evolução da população - Versão {self.version}')
 
-        if self.show:
-            plt.show()
+        #plt.show()
         
         fig_name = generate_unique_filename('genetic')
         return self.save_plot(f'plot_evolution_{fig_name}')

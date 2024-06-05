@@ -35,7 +35,7 @@ def version_min(size: int, n_childrens: int, n_generations: int, average_fitness
     try:
         fitness_v2 = lambda x, y: 20 + (x**2) + (y**2) - 10 * (np.cos(2*np.pi*x) + np.cos(2*np.pi*y))
 
-        algorithm = GeneticAlgorithm(size=size, n_childrens=n_childrens, n_generations=n_generations, mutation=1, interval=[-5, 5], fitness=fitness_v2, for_max=False, version='min', save_docs=False, show_plot=False)
+        algorithm = GeneticAlgorithm(size=size, n_childrens=n_childrens, n_generations=n_generations, mutation=1, interval=[-5, 5], fitness=fitness_v2, for_max=False, version='01', save_docs=False, show_plot=False)
         return algorithm.init()
 
     except Exception as e:
@@ -45,7 +45,7 @@ def version_min(size: int, n_childrens: int, n_generations: int, average_fitness
 def version_max(size: int, n_childrens: int, n_generations: int, average_fitness: bool = False):
     try:
         fitness_v3 = np.vectorize(safe_fitness_max)
-        algorithm = GeneticAlgorithm(size=size, n_childrens=n_childrens, n_generations=n_generations, mutation=1, interval=[-2, 2], fitness=fitness_v3, for_max=True, version='max', save_docs=False, show_plot=False)
+        algorithm = GeneticAlgorithm(size=size, n_childrens=n_childrens, n_generations=n_generations, mutation=1, interval=[-2, 2], fitness=fitness_v3, for_max=True, version='02', save_docs=False, show_plot=False)
         return algorithm.init()
 
     except Exception as e:
