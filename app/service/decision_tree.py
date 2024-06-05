@@ -48,7 +48,7 @@ def plot_decision_tree(dt_classifier: DecisionTreeClassifier):
     fig, ax = plt.subplots(figsize=(20, 20))
     plot_tree(dt_classifier, filled=True, ax=ax)
 
-    fig_name = generate_unique_filename()
+    fig_name = generate_unique_filename('tree')
     fig_src = f'assets/doc/plot/{fig_name}'
     plt.savefig(fig_src, format='png')
 

@@ -1,5 +1,6 @@
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
+from service.utils import generate_unique_filename
 import numpy as np
 import pandas as pd
 import random
@@ -272,12 +273,14 @@ class GeneticAlgorithm:
         Este método tenta salvar o gráfico de fitness 3D gerado pelo método `plot_fitness` como uma imagem PNG no diretório `docs/plot`. Ele cria o diretório se ele não existir. Se ocorrerem erros durante o salvamento, ele gera uma exceção com uma mensagem informativa.
         """
         try:
-            plot_dir = 'docs/plot'
+            plot_dir = f'assets/doc/plot/{name}'
 
             if not os.path.exists(plot_dir):
                 os.makedirs(plot_dir)
             
-            plt.savefig(f'{plot_dir}/{name}.png')
+            plt.savefig(plot_dir, format='png')
+
+            return plot_dir
         
         except Exception as e:
             raise Exception(f'\nErro ao tentar salvar a plotagem como imagem: \n{e}\n')
@@ -328,10 +331,14 @@ class GeneticAlgorithm:
 
         ax.text(best[0], best[1], best[2], f' Melhor indivíduo:\n x={best[0]}, y={best[1]}, fitness={best[2]}', transform=ax.transAxes, verticalalignment='top', color='red')
 
-        self.save_plot(f'plot_fitness_v{self.version}')
-        
         if self.show:
             plt.show()
+        
+        fig_name = generate_unique_filename('genetic')
+        return self.save_plot(f'plot_fitness_{fig_name}')
+        
+        
+        
 
     def plot_evolution(self):
         """
@@ -365,11 +372,13 @@ class GeneticAlgorithm:
 
         plt.title(f'Evolução da população - Versão {self.version}')
 
-        self.save_plot(f'plot_evolution_v{self.version}')
-
         if self.show:
             plt.show()
-            
+        
+        fig_name = generate_unique_filename('genetic')
+        return self.save_plot(f'plot_evolution_{fig_name}')
+
+
     def plot_results(self, show=True):
         pass
 
@@ -396,8 +405,8 @@ class GeneticAlgorithm:
         self.fitness_max.append(max_fit)
         self.fitness_min.append(min_fit)
 
-        if self.save_docs:
-            self.save_doc(pos_best, max_fit, min_fit, avg, count_generations)
+        # if self.save_docs:
+          #  self.save_doc(pos_best, max_fit, min_fit, avg, count_generations)
 
     def init_results_file(self):
         """
@@ -481,7 +490,7 @@ class GeneticAlgorithm:
         """
         count_generations = 1
 
-        self.init_results_file()
+        # self.init_results_file()
 
         while count_generations <= self.n_generations:
             self.childrens = []
@@ -496,7 +505,9 @@ class GeneticAlgorithm:
             self.check_individual_best(count_generations)
             count_generations += 1
 
-        if self.save_docs:
-            print(f'Gerado arquivo com resultados em: {self.results_file_path}\n')
-            self.plot_fitness()
-            self.plot_evolution()
+        
+        print(f'Gerado arquivo com resultados em: {self.results_file_path}\n')
+        fig_src_fitness = self.plot_fitness()
+        fig_src_evolution = self.plot_evolution()
+
+        return fig_src_fitness, fig_src_evolution

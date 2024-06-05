@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, status, UploadFile, File
 from model.DataScheme import DataScheme
 from service.knn import apply_knn
 from service.decision_tree import apply_decision_tree
+from service.genetic_algorithm import apply_genetic_algorithm
 import pandas as pd
 
 router = APIRouter()
@@ -106,4 +107,10 @@ async def test_decision_tree():
 
 @router.get("/genetic-algorithm")
 async def genetic_algorithm():
-    return "Genetic Algorithm"
+    try:
+        info = apply_genetic_algorithm()
+        return {'result': info}
+    except Exception as e:
+          return HTTPException(status_code=400, detail=str(e))
+
+    
