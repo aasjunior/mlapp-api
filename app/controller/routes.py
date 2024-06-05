@@ -17,16 +17,17 @@ async def knn(data: DataScheme, file: UploadFile = File(...)):
         accuracy = apply_knn(X, y)
 
         info = {
-            'quantidade de exemplos': len(df),
-            'quantidade de classes': df[data.classHeader].nunique(),
-            'quantidade de atributos': len(data.attributeHeaders),
-            'taxa de acerto': '%.2f%%' % accuracy,
+            'number_of_examples': len(df),
+            'number_of_classes': df[data.classHeader].nunique(),
+            'number_of_attributes': len(data.attributeHeaders),
+            'accuracy': '%.2f%%' % accuracy,
         }
 
         return {'result': info}
 
     except Exception as e:
         return HTTPException(status_code=400, detail=str(e))
+
 
 @router.get('/test-knn')
 async def test_knn():
@@ -41,16 +42,40 @@ async def test_knn():
         accuracy = apply_knn(X, y)
 
         info = {
-            'quantidade de exemplos': len(df),
-            'quantidade de classes': df[class_header].nunique(),
-            'quantidade de atributos': len(attribute_headers),
-            'taxa de acerto': accuracy,
+            'number_of_examples': len(df),
+            'number_of_classes': df[class_header].nunique(),
+            'number_of_attributes': len(attribute_headers),
+            'accuracy': accuracy,
         }
 
         return {'result': info}
 
     except Exception as e:
         return HTTPException(status_code=400, detail=str(e))
+
+
+@router.post('/decision-tree')
+async def decision_tree(data: DataScheme, file: UploadFile = File(...)):
+    try:
+        contents = await file.read()
+        df = pd.read_csv(contents)
+        X = df[list(data.attributeHeaders)]
+        y = df[data.classHeader]
+
+        result = apply_decision_tree(X, y)
+
+        info = {
+            'number_of_examples': len(df),
+            'number_of_classes': df[data.classHeader].nunique(),
+            'number_of_attributes': len(data.attributeHeaders),
+            'model_info': result
+        }
+
+        return {'result': info}
+
+    except Exception as e:
+        return HTTPException(status_code=400, detail=str(e))
+
 
 @router.get('/test-decision-tree')
 async def test_decision_tree():
@@ -75,6 +100,7 @@ async def test_decision_tree():
     
     except Exception as e:
         return HTTPException(status_code=400, detail=str(e))
+
 
 @router.get("/genetic-algorithm")
 async def genetic_algorithm():
