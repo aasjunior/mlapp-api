@@ -1,6 +1,7 @@
 from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+from .utils import generate_unique_filename, get_image_base64, ensure_directory_exists
 from pandas import DataFrame, Series
 from base64 import b64encode
 import matplotlib.pyplot as plt
@@ -19,10 +20,9 @@ def apply_decision_tree(X: DataFrame, y: Series, test_size=0.3, train_size=0.7):
 
         plot_decision_tree(dt_classifier)
         model_image_base64 = get_image_base64('db/plot/tree.png')
-        
+       
         model_info = {
             'accuracy': '%.2f%%' % accuracy,
-            'model': model_serialize(dt_classifier),
             'model_image': model_image_base64
         }
 
@@ -45,11 +45,32 @@ def model_serialize(dt_classifier: DecisionTreeClassifier):
 
 
 def plot_decision_tree(dt_classifier: DecisionTreeClassifier):
-    fig, ax = plt.subplots(figsize=(20, 20))  # Ajuste o tamanho conforme necessário
+    fig, ax = plt.subplots(figsize=(20, 20))
     plot_tree(dt_classifier, filled=True, ax=ax)
-    plt.savefig('db/plot/tree.png', format='png')
+
+    fig_name = generate_unique_filename()
+    plt.savefig(f'db/plot/{fig_name}', format='png')
 
 
-def get_image_base64(image_path: str):
-    with open(image_path, 'rb') as img_file:
-        return b64encode(img_file.read()).decode('utf-8')
+def describe_decision_tree(tree_model, feature_names):
+    # Obtém os nós da árvore
+    tree_nodes = tree_model.tree_
+
+    def describe_node(node_index):
+        if tree_nodes.children_left[node_index] == tree_nodes.children_right[node_index]:
+            # Nó folha
+            class_counts = tree_nodes.value[node_index][0]
+            class_labels = [f"Classe {i}" for i in range(len(class_counts))]
+            node_description = f"Nó folha: Contagem de amostras por classe: {dict(zip(class_labels, class_counts))}"
+        else:
+            # Nó interno
+            feature_index = tree_nodes.feature[node_index]
+            threshold = tree_nodes.threshold[node_index]
+            left_child = tree_nodes.children_left[node_index]
+            right_child = tree_nodes.children_right[node_index]
+            node_description = f"Nó interno: Característica {feature_names[feature_index]}, Threshold: {threshold:.2f}, Filhos: Esquerda ({left_child}), Direita ({right_child})"
+
+        return node_description
+
+    root_description = describe_node(0)
+    return root_description
