@@ -4,6 +4,6 @@ from service.utils import ensure_directory_exists
 
 app = FastAPI()
 
-ensure_directory_exists('db/plot')
+ensure_directory_exists('assets/doc/plot')
 
 app.include_router(router)

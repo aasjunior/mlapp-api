@@ -18,8 +18,8 @@ def apply_decision_tree(X: DataFrame, y: Series, test_size=0.3, train_size=0.7):
         predictions = dt_classifier.predict(X_test)
         accuracy = accuracy_score(Y_test, predictions) * 100
 
-        plot_decision_tree(dt_classifier)
-        model_image_base64 = get_image_base64('db/plot/tree.png')
+        fig_src = plot_decision_tree(dt_classifier)
+        model_image_base64 = get_image_base64(fig_src)
        
         model_info = {
             'accuracy': '%.2f%%' % accuracy,
@@ -49,28 +49,7 @@ def plot_decision_tree(dt_classifier: DecisionTreeClassifier):
     plot_tree(dt_classifier, filled=True, ax=ax)
 
     fig_name = generate_unique_filename()
-    plt.savefig(f'db/plot/{fig_name}', format='png')
+    fig_src = f'assets/doc/plot/{fig_name}'
+    plt.savefig(fig_src, format='png')
 
-
-def describe_decision_tree(tree_model, feature_names):
-    # Obtém os nós da árvore
-    tree_nodes = tree_model.tree_
-
-    def describe_node(node_index):
-        if tree_nodes.children_left[node_index] == tree_nodes.children_right[node_index]:
-            # Nó folha
-            class_counts = tree_nodes.value[node_index][0]
-            class_labels = [f"Classe {i}" for i in range(len(class_counts))]
-            node_description = f"Nó folha: Contagem de amostras por classe: {dict(zip(class_labels, class_counts))}"
-        else:
-            # Nó interno
-            feature_index = tree_nodes.feature[node_index]
-            threshold = tree_nodes.threshold[node_index]
-            left_child = tree_nodes.children_left[node_index]
-            right_child = tree_nodes.children_right[node_index]
-            node_description = f"Nó interno: Característica {feature_names[feature_index]}, Threshold: {threshold:.2f}, Filhos: Esquerda ({left_child}), Direita ({right_child})"
-
-        return node_description
-
-    root_description = describe_node(0)
-    return root_description
+    return fig_src

@@ -6,6 +6,8 @@ import pandas as pd
 
 router = APIRouter()
 
+data_src = "assets/db/iris.csv"
+
 @router.post('/knn')
 async def knn(data: DataScheme, file: UploadFile = File(...)):
     try:
@@ -35,7 +37,7 @@ async def test_knn():
     class_header = 'class'
     try:
 
-        df = pd.read_csv('db/iris.csv')
+        df = pd.read_csv(data_src)
         X = df[list(attribute_headers)]
         y = df[class_header]
 
@@ -83,7 +85,7 @@ async def test_decision_tree():
     class_header = 'class'
 
     try:
-        df = pd.read_csv('db/iris.csv')
+        df = pd.read_csv(data_src)
         X = df[list(attribute_headers)]
         y = df[class_header]
 
