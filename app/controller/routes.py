@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, status, UploadFile, File
 from model.DataScheme import DataScheme
 from service.knn import apply_knn
+from service.decision_tree import apply_decision_tree
 import pandas as pd
 
 router = APIRouter()
@@ -51,6 +52,29 @@ async def test_knn():
     except Exception as e:
         return HTTPException(status_code=400, detail=str(e))
 
+@router.get('/test-decision-tree')
+async def test_decision_tree():
+    attribute_headers = ['sepal_length','sepal_width','petal_length','petal_width']
+    class_header = 'class'
+
+    try:
+        df = pd.read_csv('db/iris.csv')
+        X = df[list(attribute_headers)]
+        y = df[class_header]
+
+        result = apply_decision_tree(X, y)
+
+        info = {
+            'number_of_examples': len(df),
+            'number_of_classes': df[class_header].nunique(),
+            'number_of_attributes': len(attribute_headers),
+            'model_info': result
+        }
+
+        return {'result': info}
+    
+    except Exception as e:
+        return HTTPException(status_code=400, detail=str(e))
 
 @router.get("/genetic-algorithm")
 async def genetic_algorithm():
