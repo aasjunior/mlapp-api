@@ -21,4 +21,4 @@ def current_time():
 def generate_log(error, traceback_details):
     with open('assets/log/error_log.txt', 'w') as file:
         file.write(f'[{current_time()}] Ocorreu um erro:\n{error}\n')
-        file.write(traceback_details)
+        file.write(traceback_details)  
