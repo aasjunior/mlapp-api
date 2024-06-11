@@ -21,14 +21,13 @@ async def knn(data: DataScheme, file: UploadFile = File(...)):
 
         accuracy = apply_knn(X, y)
 
-        info = {
+
+        return {
             'number_of_examples': len(df),
             'number_of_classes': df[data.classHeader].nunique(),
             'number_of_attributes': len(data.attributeHeaders),
-            'accuracy': '%.2f%%' % accuracy,
+            'accuracy': '%.2f%%' % accuracy
         }
-
-        return {'result': info}
 
     except Exception as e:
         generate_log(e, traceback.format_exc())
@@ -39,7 +38,7 @@ async def knn(data: DataScheme, file: UploadFile = File(...)):
 async def test_knn():
     attribute_headers = ['sepal_length','sepal_width','petal_length','petal_width']
     class_header = 'class'
-    
+
     try:
         df = pd.read_csv(data_src)
         X = df[list(attribute_headers)]
@@ -47,14 +46,12 @@ async def test_knn():
 
         accuracy = apply_knn(X, y)
 
-        info = {
+        return {
             'number_of_examples': len(df),
             'number_of_classes': df[class_header].nunique(),
             'number_of_attributes': len(attribute_headers),
             'accuracy': accuracy,
         }
-
-        return {'result': info}
 
     except Exception as e:
         generate_log(e, traceback.format_exc())
@@ -97,15 +94,13 @@ async def test_decision_tree():
 
         result = apply_decision_tree(X, y)
 
-        info = {
+        return {
             'number_of_examples': len(df),
             'number_of_classes': df[class_header].nunique(),
             'number_of_attributes': len(attribute_headers),
             'model_info': result
         }
 
-        return {'result': info}
-    
     except Exception as e:
         generate_log(e, traceback.format_exc())
         return HTTPException(status_code=400, detail=str(e))
@@ -115,10 +110,8 @@ async def test_decision_tree():
 async def genetic_algorithm():
     try:
         info = apply_genetic_algorithm()
-        return {'result': info}
-    
+        return info
+
     except Exception as e:
         generate_log(e, traceback.format_exc())
         return HTTPException(status_code=400, detail=str(e))
-
-    
