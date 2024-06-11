@@ -47,7 +47,10 @@ pip install -r requirements.txt
 ```
 python -m uvicorn main:app --reload
 ```
-4. A API estará rodando em `http://127.0.0.1:8000`
+4. A API estará rodando em:
+```
+http://127.0.0.1:8000
+```
 <br>
 
 ## Endpoints
