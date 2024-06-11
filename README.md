@@ -227,3 +227,7 @@ Em caso de erros durante a execução dos algoritmos, a API retorna um código d
 - Os endpoints /test-knn e /test-decision-tree utilizam um dataset pré-definido localizado em assets/db/iris.csv.
 
 - Os gráficos do algoritmo genético são retornados como strings codificadas em base64.
+
+##
+###### Aviso
+Este é um trabalho acadêmico realizado como tarefa da disciplina de Laboratório Mobile/Computação Natural no 5º Semestre de Desenvolvimento de Software Multiplataforma
