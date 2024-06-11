@@ -1,5 +1,5 @@
 ```shell
-C:\..\mlapp-api> cd app
+cd app
 ```
 
 ```shell
