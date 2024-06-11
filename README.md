@@ -3,7 +3,7 @@
 Esta API fornece endpoints para aplicar algoritmos de aprendizado de máquina, como K-Nearest Neighbors (KNN), Árvore de Decisão e Algoritmo Genético. Os endpoints aceitam arquivos CSV como entrada e retornam várias métricas e resultados da execução do algoritmo.
 
 <div align="center">
-   <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
+   <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" />
    <img src="https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi" alt="FastAPI"/>
    <img src="https://img.shields.io/badge/Scikit_Learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white" alt="Scikit-Learn"/>
 </div>
