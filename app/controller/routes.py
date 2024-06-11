@@ -115,7 +115,7 @@ async def test_decision_tree():
 async def genetic_algorithm():
     try:
         info = apply_genetic_algorithm()
-        return {'result': info}
+        return info
     
     except Exception as e:
         generate_log(e, traceback.format_exc())

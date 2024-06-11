@@ -1,0 +1,7 @@
+[2024-06-10 20:01:07] Ocorreu um erro:
+unhashable type: 'dict'
+Traceback (most recent call last):
+  File "E:\adeld\MachineLearningApp\mlapp-api\app\controller\routes.py", line 118, in genetic_algorithm
+    return { info }
+           ^^^^^^^^
+TypeError: unhashable type: 'dict'
