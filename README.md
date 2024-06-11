@@ -57,6 +57,27 @@ http://127.0.0.1:8000
 
 ### 1. K-Nearest Neighbors (KNN)
 
+```python
+def apply_knn(X: DataFrame, y: Series, test_size=0.3, train_size=0.7, n_neighbors=3):
+    try:
+        if not is_normalized(X):
+            print('\nis not normalized\n')
+            X, y = normalize_data(X, y)
+
+        X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=test_size, train_size=train_size)
+
+        knn = KNeighborsClassifier(n_neighbors)
+        knn.fit(X_train, Y_train)
+
+        predictions = knn.predict(X_test)
+        accuracy = accuracy_score(Y_test, predictions) * 100
+    
+        return  '%.2f%%' % accuracy
+    
+    except Exception as e:
+        raise Exception('\nOcorreu um erro na execução do Knn:\n{e}\n')
+```
+
 **POST /knn**
 
 - **Descrição**: Aplica o algoritmo KNN no dataset fornecido.
@@ -124,6 +145,31 @@ curl -X POST "http://127.0.0.1:8000/knn" \
 
 ### 3. Árvore de Decisão
 
+```python
+def apply_decision_tree(X: DataFrame, y: Series, test_size=0.3, train_size=0.7):
+    try:
+        X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=test_size, train_size=train_size)
+
+        dt_classifier = DecisionTreeClassifier()
+        dt_classifier.fit(X_train, Y_train)
+
+        predictions = dt_classifier.predict(X_test)
+        accuracy = accuracy_score(Y_test, predictions) * 100
+
+        fig_src = plot_decision_tree(dt_classifier)
+        model_image_base64 = get_image_base64(fig_src)
+       
+        model_info = {
+            'accuracy': '%.2f%%' % accuracy,
+            'model_image': model_image_base64
+        }
+
+        return model_info
+    
+    except Exception as e:
+        raise Exception(f'\nOcorreu um erro na execução da arvore de decisão:\n{e}\n')
+```
+
 **POST /decision-tree**
 
 - **Descrição**: Aplica o algoritmo de Árvore de Decisão no dataset fornecido.
@@ -188,6 +234,36 @@ curl -X POST "http://seu-dominio/decision-tree" \
 <br>
 
 ### 5. Algoritmo Genético
+
+```python
+def apply_genetic_algorithm(for_max: bool = False):
+    try:
+        size = np.random.randint(20, 101)
+        n_childrens = int(0.7 * size)
+        n_generations = 10
+
+        if for_max:
+            fig_fitness, fig_evolution = version_max(size, n_childrens, n_generations)
+            fitness = 'maximizar z = e ^ -(x² + y²)'
+
+        else:
+            fig_fitness, fig_evolution = version_min(size, n_childrens, n_generations)
+            fitness = 'minimizar z = 20 + x² + y² - 10 * (cos(2πx) + cos(2πy))'
+
+        return {
+            'size': size,
+            'n_childrens': n_childrens,
+            'n_generations': n_generations,
+            'fitness': fitness,
+            'plot_images': {
+                'plot_fitness': get_image_base64(fig_fitness),
+                'plot_evolution': get_image_base64(fig_evolution)
+            }
+        }
+
+    except Exception as e:
+        raise Exception(f'\nOcorreu um erro na execução do algoritmo genéetico:\n{e}\n')
+```
 
 **GET /genetic-algorithm**
 
