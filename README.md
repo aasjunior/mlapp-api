@@ -76,7 +76,7 @@ Ao fazer a requisição, você deve enviar o arquivo CSV e o JSON com o esquema 
 curl -X POST "http://127.0.0.1:8000/knn" \
 -H "accept: application/json" \
 -H "Content-Type: multipart/form-data" \
--F "file=@caminho/do/seu/arquivo.csv" \
+-F "file=@caminho/iris.csv" \
 -F 'data={"attributeHeaders":["sepal_length","sepal_width","petal_length","petal_width"],"classHeader":"class"}'
 ```
 
@@ -134,7 +134,7 @@ curl -X POST "http://127.0.0.1:8000/knn" \
 curl -X POST "http://seu-dominio/decision-tree" \
 -H "accept: application/json" \
 -H "Content-Type: multipart/form-data" \
--F "file=@caminho/do/seu/arquivo.csv" \
+-F "file=@caminho/iris.csv" \
 -F 'data={"attributeHeaders":["sepal_length","sepal_width","petal_length","petal_width"],"classHeader":"class"}'
 ```
 
